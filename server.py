@@ -1,9 +1,23 @@
-from flask import Flask
-server = Flask(__name__)
+# This example requires the 'message_content' intent.
 
-@server.route("/")
-def hello():
-    return "Hello World!"
+import discord
+import os
 
-if __name__ == "__main__":
-   server.run(host='0.0.0.0', port=1337)
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('$hello'):
+        await message.channel.send('Hello!')
+
+client.run(os.environ['DISCORD_TOKEN'])
