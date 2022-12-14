@@ -2,6 +2,7 @@ FROM python:3.8
 
 COPY requirements.txt .
 
+RUN apt install libffi-dev libnacl-dev python3-dev ffmpeg
 RUN pip install -r requirements.txt
 
 COPY . .
